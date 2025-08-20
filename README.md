@@ -1,3 +1,117 @@
+# 🧩 Chat Completions API
+The create() method in the Chat Completions API (e.g., client.chat.completions.create(...)) has several important fields that control how the model responds. Let’s break down the main ones.
+
+🔹 1. model
+
+Type: str
+
+Description: The name of the model you want to use.
+
+Example: `"gpt-4o-mini"` or `"gpt-3.5-turbo"`
+
+Purpose: Determines the capabilities, speed, and cost of the response.
+
+🔹 2. messages
+
+Type: list[dict]
+
+Description: A list of messages forming the conversation so far. Each message is a dictionary with:
+
+"role" → "system", "user", or "assistant"
+
+"content" → the actual text
+
+Purpose: Provides the model with context for generating a response.
+
+Example:
+
+`messages=[
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Hello!"}
+]`
+
+🔹 3. max_tokens
+
+Type: int
+
+Description: Maximum number of tokens (words/pieces of words) the model can generate for this completion.
+
+Purpose: Limits the length of the model’s reply.
+
+Example: `max_tokens=150` → the reply will not exceed ~150 tokens.
+
+🔹 4. temperature
+
+Type: float (0 to 2)
+
+Description: Controls creativity/randomness of the output.
+
+0 → very deterministic, safe answers
+
+1 → default randomness
+
+>1 → more creative or unpredictable
+
+Example: `temperature=0.7`
+
+🔹 5. top_p
+
+Type: float (0 to 1)
+
+Description: Alternative to temperature using nucleus sampling. Only the top p probability mass is considered.
+
+Purpose: Another way to control randomness. Usually `top_p=1.0` (default).
+
+🔹 6. stop
+
+Type: str or list[str]
+
+Description: Tells the model when to stop generating text.
+
+Example: `stop=["\nUser:", "\nAssistant:"]`
+
+🔹 7. presence_penalty / frequency_penalty
+
+Type: float
+
+Description:
+
+presence_penalty → encourages the model to talk about new topics
+
+frequency_penalty → reduces repetition of words/phrases
+
+Range: `-2.0 to 2.0`
+
+🔹 8. n
+
+Type: int
+
+Description: Number of responses to generate per request.
+
+Example: `n=3` → returns 3 alternative completions.
+
+🔹 9. logit_bias
+
+Type: dict[str, int]
+
+Description: Biases the probability of specific tokens being generated. Advanced usage.
+
+🔹 Minimal Example
+`response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Summarize this text."}
+    ],
+    max_tokens=150,
+    temperature=0.5,
+    n=1
+)`
+
+
+This will generate 1 completion, up to 150 tokens, with moderate creativity.
+
+
 # 🧩 What is JSON?
 
 **JSON** stands for  **JavaScript Object Notation** .
