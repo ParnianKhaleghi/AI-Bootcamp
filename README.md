@@ -1,4 +1,4 @@
-### 🧩 What is JSON?
+# 🧩 What is JSON?
 
 **JSON** stands for  **JavaScript Object Notation** .
 
@@ -64,7 +64,7 @@ data = {</span><span>"name"</span><span>: </span><span>"your-name"</span><span>,
 We use Python’s `json` module to  **convert between the two** .
 
 
-### 🧩 Create a virtual environment
+# 🧩 Create a virtual environment
 
 <pre class="overflow-visible!" data-start="168" data-end="201"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-bash"><span><span>python -m venv venv
 </span></span></code></div></div></pre>
@@ -84,6 +84,72 @@ This creates a directory `venv/` with its own Python interpreter and packages.
 When you’re done, exit the environment with:
 
 <pre class="overflow-visible!" data-start="992" data-end="1014"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-bash"><span><span>deactivate</span></span></code></div></div></pre>
+
+# 🧩 system, user, and assistant
+This is a key concept for building chatbots with OpenAI. The Chat API uses three “roles” to structure the conversation: system, user, and assistant. Each role has a specific purpose.
+
+1️⃣ system
+
+Purpose: Set the behavior, personality, or rules for the assistant.
+
+Who writes it: The developer (you).
+
+When it’s used: Usually only once at the beginning of a conversation.
+
+Example:
+
+{"role": "system", "content": "You are a friendly tutor that explains Python concepts clearly."}
+
+
+Effect: Guides the assistant’s style, tone, and instructions throughout the conversation.
+
+Think of it as: “The instructions for the AI.”
+
+2️⃣ user
+
+Purpose: Represents the input/questions from the human.
+
+Who writes it: The user (or your code when you pass user input).
+
+Example:
+
+{"role": "user", "content": "Can you explain how loops work in Python?"}
+
+
+Effect: The model responds to this message, taking into account the system’s instructions and previous conversation history.
+
+Think of it as: “What the person is saying.”
+
+3️⃣ assistant
+
+Purpose: Represents the model’s responses.
+
+Who writes it: The AI itself (or in your code, you append the AI’s reply to the history).
+
+Example:
+
+{"role": "assistant", "content": "Sure! In Python, loops allow you to repeat code..." }
+
+
+Effect: Used as context for future messages, so the model “remembers” what it said before.
+
+Think of it as: “The AI’s reply.”
+
+🔹 How they work together
+conversation_history = [
+    {"role": "system", "content": "You are a helpful assistant."},  # system message
+    {"role": "user", "content": "Hello!"},                          # user message
+    {"role": "assistant", "content": "Hi! How can I help you?"}     # assistant message
+]
+
+
+system → sets the AI’s behavior
+
+user → gives input or asks questions
+
+assistant → provides the AI’s answer
+
+The model always reads the entire list in order, so it can respond consistently and “remember” the conversation.
 
 
 # 🤖 Chatbot with Memory – Homework Guide
