@@ -1,0 +1,9 @@
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# Output files
+*.json
+*.txt
+outputs/
