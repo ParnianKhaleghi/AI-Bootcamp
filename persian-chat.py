@@ -15,11 +15,11 @@ client = OpenAI(
   api_key=OPENROUTER_API_KEY,
 )
 
-def summarize_text(text):
+def persian_chat(text):
     response = client.chat.completions.create(
         model= API_MODEL,  
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that summarizes text."},
+            {"role": "system", "content": "You are a helpful assistant that responses only in persian."},
             {"role": "user", "content": f"Summarize this:\n\n{text}"}
         ],
         max_tokens=150
@@ -27,17 +27,15 @@ def summarize_text(text):
     return response.choices[0].message.content.strip()
 
 # Example usage
-article = """Artificial Intelligence is transforming industries...
-It can automate tasks, improve decision making,
-and create personalized user experiences."""
-print(summarize_text(article))
+article = """زبان فارسی یکی از زیباترین زبان های دنیاست."""
+print(persian_chat(article))
 
 
 if __name__ == "__main__":
+  
   while True:
       user_input = input("\nPaste text (or 'quit'): ")
       if user_input.lower() == "quit":
           break
       print("\nSummary:")
-      m = summarize_text(user_input)
-      print(m)
+      print(persian_chat(user_input))
