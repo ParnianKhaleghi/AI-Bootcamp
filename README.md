@@ -1,4 +1,118 @@
-### What is JSON?
+# 🧩 Chat Completions API
+The create() method in the Chat Completions API (e.g., client.chat.completions.create(...)) has several important fields that control how the model responds. Let’s break down the main ones.
+
+🔹 1. model
+
+Type: str
+
+Description: The name of the model you want to use.
+
+Example: `"gpt-4o-mini"` or `"gpt-3.5-turbo"`
+
+Purpose: Determines the capabilities, speed, and cost of the response.
+
+🔹 2. messages
+
+Type: list[dict]
+
+Description: A list of messages forming the conversation so far. Each message is a dictionary with:
+
+"role" → "system", "user", or "assistant"
+
+"content" → the actual text
+
+Purpose: Provides the model with context for generating a response.
+
+Example:
+
+`messages=[
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Hello!"}
+]`
+
+🔹 3. max_tokens
+
+Type: int
+
+Description: Maximum number of tokens (words/pieces of words) the model can generate for this completion.
+
+Purpose: Limits the length of the model’s reply.
+
+Example: `max_tokens=150` → the reply will not exceed ~150 tokens.
+
+🔹 4. temperature
+
+Type: float (0 to 2)
+
+Description: Controls creativity/randomness of the output.
+
+0 → very deterministic, safe answers
+
+1 → default randomness
+
+>1 → more creative or unpredictable
+
+Example: `temperature=0.7`
+
+🔹 5. top_p
+
+Type: float (0 to 1)
+
+Description: Alternative to temperature using nucleus sampling. Only the top p probability mass is considered.
+
+Purpose: Another way to control randomness. Usually `top_p=1.0` (default).
+
+🔹 6. stop
+
+Type: str or list[str]
+
+Description: Tells the model when to stop generating text.
+
+Example: `stop=["\nUser:", "\nAssistant:"]`
+
+🔹 7. presence_penalty / frequency_penalty
+
+Type: float
+
+Description:
+
+presence_penalty → encourages the model to talk about new topics
+
+frequency_penalty → reduces repetition of words/phrases
+
+Range: `-2.0 to 2.0`
+
+🔹 8. n
+
+Type: int
+
+Description: Number of responses to generate per request.
+
+Example: `n=3` → returns 3 alternative completions.
+
+🔹 9. logit_bias
+
+Type: dict[str, int]
+
+Description: Biases the probability of specific tokens being generated. Advanced usage.
+
+🔹 Minimal Example
+`response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Summarize this text."}
+    ],
+    max_tokens=150,
+    temperature=0.5,
+    n=1
+)`
+
+
+This will generate 1 completion, up to 150 tokens, with moderate creativity.
+
+
+# 🧩 What is JSON?
 
 **JSON** stands for  **JavaScript Object Notation** .
 
@@ -64,7 +178,7 @@ data = {</span><span>"name"</span><span>: </span><span>"your-name"</span><span>,
 We use Python’s `json` module to  **convert between the two** .
 
 
-### Create a virtual environment
+# 🧩 Create a virtual environment
 
 <pre class="overflow-visible!" data-start="168" data-end="201"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-bash"><span><span>python -m venv venv
 </span></span></code></div></div></pre>
@@ -84,6 +198,72 @@ This creates a directory `venv/` with its own Python interpreter and packages.
 When you’re done, exit the environment with:
 
 <pre class="overflow-visible!" data-start="992" data-end="1014"><div class="contain-inline-size rounded-2xl relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"><span class="" data-state="closed"></span></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-bash"><span><span>deactivate</span></span></code></div></div></pre>
+
+# 🧩 system, user, and assistant
+This is a key concept for building chatbots with OpenAI. The Chat API uses three “roles” to structure the conversation: system, user, and assistant. Each role has a specific purpose.
+
+1️⃣ system
+
+Purpose: Set the behavior, personality, or rules for the assistant.
+
+Who writes it: The developer (you).
+
+When it’s used: Usually only once at the beginning of a conversation.
+
+Example:
+
+{"role": "system", "content": "You are a friendly tutor that explains Python concepts clearly."}
+
+
+Effect: Guides the assistant’s style, tone, and instructions throughout the conversation.
+
+Think of it as: “The instructions for the AI.”
+
+2️⃣ user
+
+Purpose: Represents the input/questions from the human.
+
+Who writes it: The user (or your code when you pass user input).
+
+Example:
+
+{"role": "user", "content": "Can you explain how loops work in Python?"}
+
+
+Effect: The model responds to this message, taking into account the system’s instructions and previous conversation history.
+
+Think of it as: “What the person is saying.”
+
+3️⃣ assistant
+
+Purpose: Represents the model’s responses.
+
+Who writes it: The AI itself (or in your code, you append the AI’s reply to the history).
+
+Example:
+
+{"role": "assistant", "content": "Sure! In Python, loops allow you to repeat code..." }
+
+
+Effect: Used as context for future messages, so the model “remembers” what it said before.
+
+Think of it as: “The AI’s reply.”
+
+🔹 How they work together
+conversation_history = [
+    {"role": "system", "content": "You are a helpful assistant."},  # system message
+    {"role": "user", "content": "Hello!"},                          # user message
+    {"role": "assistant", "content": "Hi! How can I help you?"}     # assistant message
+]
+
+
+system → sets the AI’s behavior
+
+user → gives input or asks questions
+
+assistant → provides the AI’s answer
+
+The model always reads the entire list in order, so it can respond consistently and “remember” the conversation.
 
 
 # 🤖 Chatbot with Memory – Homework Guide
