@@ -1,3 +1,5 @@
+# --- simple get_response from langchain example ---
+
 from lc.openrouter_llm import OpenrouterChatLLM
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate
