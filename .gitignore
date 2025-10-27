@@ -8,3 +8,5 @@ venv/
 outputs/
 
 __pycache__/
+
+chroma_db/
